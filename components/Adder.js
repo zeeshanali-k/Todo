@@ -37,11 +37,8 @@ const adderStyles=StyleSheet.create({
   container_row: {
     flex:1,
     flexDirection:"row",
-    backgroundColor:"#fff",
-    padding : 10 ,
     alignItems: 'center',
     justifyContent:'center',
-    margin:5,
   },
     input:{
         padding:10,
