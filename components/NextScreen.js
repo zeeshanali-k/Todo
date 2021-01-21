@@ -5,16 +5,23 @@ import { StyleSheet, ActivityIndicator,Image, FlatList, Text, View } from 'react
 
 export default NextScreen=()=>{
     const [isLoading, setLoading] = useState(true);
-    const [data, setData] = useState([]);
+    const [profiles, setProfiles] = useState([
+        {id:0,first_name: "Zeeshan"}
+    ]);
 
   useEffect(() => {
     fetch('https://reqres.in/api/users?page=2')
       .then((response) => response.json())
       .then((res) => {
-          res.data.forEach(element => {
-              setData(prev=>prev.push(element))
-          });
-    })
+          (res.data).forEach((element) => {
+            let name=element.first_name;
+            console.log(name);
+              setProfiles([...profiles,
+                {id:element.id,
+                first_name: element.first_name.toString()
+                }])
+            });
+      })
       .catch((error) => console.error(error))
       .finally(() => setLoading(false));
   }, []);
@@ -31,15 +38,16 @@ export default NextScreen=()=>{
             color="#bbbbb" /> ://else
             <View style={{flex:1}}>
             <FlatList
-                    keyExtractor={item=>item.id}
-                    data={data}
-                    renderItem={(item)=>(
+                    keyExtractor={item=>item.id.toString()}
+                    data={profiles}
+                    renderItem={({item})=>{
+                        return(
                         <View style={nextStyle.itemStyle}>
-                            {/* <Image style={{flex:1, width:50,height:50, margin:1}} 
-                            source={{uri:item.avatar}} /> */}
-                            <Text style={{flex:3, padding:1,fontSize:20}}>{item.first_name}</Text>
+                          <Text style={nextStyle.tvStyle}>{item.text}</Text>
                         </View>
-                    )} />
+                      )}
+                    }
+                />
                 </View>
             }
           
@@ -52,12 +60,17 @@ const nextStyle=StyleSheet.create({
         flex:1,
         flexDirection:"column",
         alignItems:"center",
-        justifyContent:"center",
     },
     itemStyle:{
         flexDirection:"row",
         flex:1,
         backgroundColor:"#bbb",
         padding:5,
-    }
+    },
+    tvStyle:{
+        padding:5,
+        backgroundColor:"#ff21ff",
+        margin:5,
+        // flex:3,
+      },
 })

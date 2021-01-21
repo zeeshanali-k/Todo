@@ -33,10 +33,6 @@ function clickListener(txt){
           data={todos}
           renderItem={({item})=>(
             <View style={styles.list_style}>
-              <Image
-              style={styles.tinyLogo}
-              source={{uri:"../circle.png"}}
-              />
               <Text style={styles.itemStyle}>{item.text}</Text>
             </View>
           )}
