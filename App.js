@@ -23,6 +23,12 @@ export default function App() {
           options={{title:"Just A Screen"}}
         />
 
+        <Stack.Screen
+          name="AnotherNextScreen"
+          component={NextScreen}
+          options={{title:"Just Another Screen"}}
+        />
+
       </Stack.Navigator>
 
     </NavigationContainer>

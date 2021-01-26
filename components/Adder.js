@@ -15,20 +15,19 @@ function onAddPress(){
 }
 
 return(
-        <View style={adderStyles.container_row}>
+      <View style={adderStyles.container_row}>
 
             <TextInput 
               style={adderStyles.input}
               placeholder="Todo..."
               onChangeText={textChanged}>{txt}</TextInput>
-
+              
             <Button 
               accessibilityLabel="Hello there"
               onPress={onAddPress}
               style={adderStyles.btnStyle}
               title="Add"
               />
-
       </View>
   );
 }

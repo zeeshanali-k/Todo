@@ -13,7 +13,7 @@ function clickListener(txt){
   if(txt!==""){
     count=count+1
     setTodo(
-      [...todos,{ text:txt, key:count.toString()} ]
+      [{ text:txt, key:count.toString()},...todos ]
     )
   }else{
     Alert.alert("Please enter something to proceed!")
@@ -24,7 +24,7 @@ function clickListener(txt){
     
     <View style={styles.container_col}>
       <StatusBar style="inverted" backgroundColor="#bbb"/>
-      <Button title="Next"  onPress={()=>navigation.navigate("NextScreen")}/>
+      <Button title="Next"  onPress={()=>navigation.navigate("NextScreen",{"page":1})}/>
     <Adder style={{flex:1}} onAdded={clickListener}/>
       
       <View style={{flex:3}}>

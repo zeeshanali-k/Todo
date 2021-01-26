@@ -1,14 +1,14 @@
 import { StatusBar } from 'expo-status-bar';
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, ActivityIndicator,Image, FlatList, Text, View } from 'react-native';
+import { StyleSheet,TouchableNativeFeedback ,ActivityIndicator,Image, FlatList, Text, View, Button, Alert } from 'react-native';
 
 
-export default NextScreen=()=>{
+export default NextScreen=({navigation,route})=>{
     const [isLoading, setLoading] = useState(true);
     const [profiles, setProfiles] = useState([]);
 
   useEffect(() => {
-    fetch('https://reqres.in/api/users?page=2')
+    fetch('https://reqres.in/api/users?page='+route.params.page)
       .then((response) => response.json())
       .then((res) => {
         setProfiles(res.data);
@@ -21,24 +21,39 @@ export default NextScreen=()=>{
     return(
         <View style={nextStyle.main}>
           <StatusBar style="inverted" backgroundColor="#bbb"/>
+          { route.name==="AnotherNextScreen"?
+            null:
+            <Button title="Next Page" onPress={()=>{navigation.navigate("AnotherNextScreen",
+                  {"page":(route.params.page+1)});                
+              }} />
+          }
 
-          { isLoading?
+          { 
+          //loading
+          isLoading?
             <ActivityIndicator
             style={{alignSelf:"center"}}
             size="large"
+            alignSelf="center"
             color="#bbbbb" /> ://else
+            //list
             <FlatList
                     keyExtractor={(item)=>item.id.toString()}
                     data={profiles}
                     renderItem={({item})=>{
                         return(
-                        <View style={nextStyle.itemStyle}>
-                          <Image 
-                          style={{width:100,height:100}}
-                          source={{uri:item.avatar}}
-                          />
-                          <Text style={nextStyle.tvStyle}>{item.first_name}</Text>
-                        </View>
+                        <TouchableNativeFeedback onPress={()=>Alert.alert("You clicked "+item.id)}>
+                          <View  style={nextStyle.itemStyle}>
+                            <Image 
+                            style={{width:70,height:70}}
+                            source={{uri:item.avatar}}
+                            />
+                            <View style={{flex:1, flexDirection:"column"}}>
+                            <Text style={{padding:5,margin:5, flex:1,}}> {item.first_name} {item.last_name}</Text>
+                            <Text style={{padding:5,margin:5, flex:1,}}> {item.email} </Text>
+                            </View>
+                          </View>
+                        </TouchableNativeFeedback>
                       )}
                     }
                 />
@@ -60,10 +75,4 @@ const nextStyle=StyleSheet.create({
         padding:5,
         margin:5,
     },
-    tvStyle:{
-        padding:5,
-        backgroundColor:"#ff21ff",
-        margin:5,
-        flex:3,
-      },
 })
