@@ -5,22 +5,13 @@ import { StyleSheet, ActivityIndicator,Image, FlatList, Text, View } from 'react
 
 export default NextScreen=()=>{
     const [isLoading, setLoading] = useState(true);
-    const [profiles, setProfiles] = useState([
-        {id:0,first_name: "Zeeshan"}
-    ]);
+    const [profiles, setProfiles] = useState([]);
 
   useEffect(() => {
     fetch('https://reqres.in/api/users?page=2')
       .then((response) => response.json())
       .then((res) => {
-          (res.data).forEach((element) => {
-            let name=element.first_name;
-            console.log(name);
-              setProfiles([...profiles,
-                {id:element.id,
-                first_name: element.first_name.toString()
-                }])
-            });
+        setProfiles(res.data);
       })
       .catch((error) => console.error(error))
       .finally(() => setLoading(false));
@@ -32,23 +23,25 @@ export default NextScreen=()=>{
           <StatusBar style="inverted" backgroundColor="#bbb"/>
 
           { isLoading?
-            <ActivityIndicator animating={isLoading} 
-            hidesWhenStopped={true} 
+            <ActivityIndicator
+            style={{alignSelf:"center"}}
             size="large"
             color="#bbbbb" /> ://else
-            <View style={{flex:1}}>
             <FlatList
-                    keyExtractor={item=>item.id.toString()}
+                    keyExtractor={(item)=>item.id.toString()}
                     data={profiles}
                     renderItem={({item})=>{
                         return(
                         <View style={nextStyle.itemStyle}>
-                          <Text style={nextStyle.tvStyle}>{item.text}</Text>
+                          <Image 
+                          style={{width:100,height:100}}
+                          source={{uri:item.avatar}}
+                          />
+                          <Text style={nextStyle.tvStyle}>{item.first_name}</Text>
                         </View>
                       )}
                     }
                 />
-                </View>
             }
           
         </View>
@@ -59,18 +52,18 @@ const nextStyle=StyleSheet.create({
     main:{
         flex:1,
         flexDirection:"column",
-        alignItems:"center",
     },
     itemStyle:{
         flexDirection:"row",
         flex:1,
         backgroundColor:"#bbb",
         padding:5,
+        margin:5,
     },
     tvStyle:{
         padding:5,
         backgroundColor:"#ff21ff",
         margin:5,
-        // flex:3,
+        flex:3,
       },
 })
