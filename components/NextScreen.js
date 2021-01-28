@@ -24,7 +24,8 @@ export default NextScreen=({navigation,route})=>{
           { route.name==="AnotherNextScreen"?
             null:
             <Button title="Next Page" onPress={()=>{navigation.navigate("AnotherNextScreen",
-                  {"page":(route.params.page+1)});                
+                  {"page":(route.params.page+1)});
+
               }} />
           }
 
