@@ -1,6 +1,7 @@
 import { StatusBar } from 'expo-status-bar';
 import React, { useEffect, useState } from 'react';
-import { StyleSheet,TouchableNativeFeedback ,ActivityIndicator,Image, FlatList, Text, View, Button, Alert } from 'react-native';
+import { StyleSheet,TouchableNativeFeedback,TouchableOpacity ,ActivityIndicator,Image, FlatList, Text, View, Button, Alert } from 'react-native';
+import { FloatingAction } from "react-native-floating-action";
 
 
 export default NextScreen=({navigation,route})=>{
@@ -43,7 +44,8 @@ export default NextScreen=({navigation,route})=>{
                     data={profiles}
                     renderItem={({item})=>{
                         return(
-                        <TouchableNativeFeedback onPress={()=>Alert.alert("You clicked "+item.id)}>
+                        <TouchableNativeFeedback style={nextStyle.itemContainerStyle} 
+                        onPress={()=>Alert.alert("You clicked "+item.id)}>
                           <View  style={nextStyle.itemStyle}>
                             <Image 
                             style={{width:70,height:70}}
@@ -53,7 +55,17 @@ export default NextScreen=({navigation,route})=>{
                             <Text style={{padding:5,margin:5, flex:1,}}> {item.first_name} {item.last_name}</Text>
                             <Text style={{padding:5,margin:5, flex:1,}}> {item.email} </Text>
                             </View>
+                            <TouchableOpacity
+                              style={nextStyle.fabStyle}
+                                onPress={()=>{
+                                  Alert.alert("Calling "+item.first_name+" "+item.last_name)
+                                }}
+                              >
+                                <Text>+</Text>
+                              </TouchableOpacity>
                           </View>
+                          {/* TODO */}
+                          <View></View>
                         </TouchableNativeFeedback>
                       )}
                     }
@@ -75,5 +87,24 @@ const nextStyle=StyleSheet.create({
         backgroundColor:"#bbb",
         padding:5,
         margin:5,
+    },
+    itemContainerStyle:{
+        flexDirection:"column",
+        padding:5,
+        margin:5,
+    },
+    fabStyle:{
+      borderWidth:1,
+      borderColor:'rgba(0,0,0,0.2)',
+      alignItems:'center',
+      justifyContent:'center',
+      width:50,
+      position: 'absolute',                                          
+      bottom: 10,                                                    
+      right: 10,
+      height:50,
+      flex:1,
+      backgroundColor:'#fff',
+      borderRadius:50,
     },
 })
